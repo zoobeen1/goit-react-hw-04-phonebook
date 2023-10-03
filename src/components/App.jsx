@@ -13,7 +13,7 @@ export function App() {
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ];
   const [contacts, setContacts] = useState(
-    localStorage.getItem('contacts') ?? templ
+    JSON.parse(localStorage.getItem('contacts')) ?? templ
   );
   const [filter, setFilter] = useState('');
 
@@ -27,6 +27,8 @@ export function App() {
   const handleSubmit = values => {
     const name = values.name;
     const names = contacts.map(contact => contact.name);
+    console.log('Names: ', names);
+    console.log('Name: ', name);
 
     if (!names.includes(name)) {
       const newContact = {
@@ -34,7 +36,9 @@ export function App() {
         id: nanoid(),
         number: values.number,
       };
-      setContacts(...contacts, newContact);
+
+      setContacts(prev => [...prev, newContact]);
+
       return true; //Буль нужен!!! :) Смотреть выше
     }
     alert(`${name} is already in contacts`);
@@ -54,10 +58,10 @@ export function App() {
   //Возвращает массив контактов по фильтру
   const getVisibleContacts = () => {
     const lowercaseFilter = filter.toLowerCase();
-    console.log(contacts, ' ', filter);
-    // return contacts.filter(contact =>
-    //   contact.name.toLowerCase().includes(lowercaseFilter)
-    // );
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(lowercaseFilter)
+    );
   };
 
   // *************************************************************************
@@ -68,8 +72,8 @@ export function App() {
       <InputForm onSubmit={handleSubmit} />
 
       <h2>Contacts</h2>
-      {/* <Filter filter={filter} onChange={changeFilter} /> */}
-      {/* <Contacts contacts={getVisibleContacts()} deleteContact={deleteContact} /> */}
+      <Filter filter={filter} onChange={changeFilter} />
+      <Contacts contacts={getVisibleContacts()} deleteContact={deleteContact} />
     </Container>
   );
 }

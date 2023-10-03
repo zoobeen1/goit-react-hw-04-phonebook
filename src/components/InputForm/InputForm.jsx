@@ -3,7 +3,6 @@ import { Input, FormStyled } from './Form.styled';
 import { Button } from '../common';
 import { FormError } from './FormError';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
 
 export const InputForm = ({ onSubmit }) => {
   const INITIAL_VALUES = { name: '', number: '' };
@@ -53,7 +52,4 @@ export const InputForm = ({ onSubmit }) => {
       </FormStyled>
     </Formik>
   );
-};
-InputForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
